@@ -115,11 +115,11 @@ class _SignInPageState extends State<SignInPage> {
 
                     //Login Logic start here
                     Map<String, String> data = {
-                      "username": _usernameController.text,
+                      "email": _usernameController.text,
                       "password": _passwordController.text,
                     };
                     var response =
-                        await networkHandler.post("/user/login", data);
+                    await networkHandler.post("/auths/login", data);
 
                     if (response.statusCode == 200 ||
                         response.statusCode == 201) {
@@ -135,7 +135,7 @@ class _SignInPageState extends State<SignInPage> {
                           MaterialPageRoute(
                             builder: (context) => HomePage(),
                           ),
-                          (route) => false);
+                              (route) => false);
                     } else {
                       String output = json.decode(response.body);
                       setState(() {
@@ -152,19 +152,19 @@ class _SignInPageState extends State<SignInPage> {
                     height: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.lightGreen,
+                      color: Color(0xff00A86B),
                     ),
                     child: Center(
                       child: circular
                           ? CircularProgressIndicator()
                           : Text(
-                              "Sign In",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                        "Sign In",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -183,13 +183,17 @@ class _SignInPageState extends State<SignInPage> {
   Widget usernameTextField() {
     return Column(
       children: [
+        Text("Username"),
         TextFormField(
           controller: _usernameController,
           decoration: InputDecoration(
             errorText: validate ? null : errorText,
-            labelText: 'Email',
-            border: OutlineInputBorder(),
-            prefixIcon: Icon(Icons.email),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.black,
+                width: 2,
+              ),
+            ),
           ),
         )
       ],
@@ -199,13 +203,11 @@ class _SignInPageState extends State<SignInPage> {
   Widget passwordTextField() {
     return Column(
       children: [
+        Text("Password"),
         TextFormField(
           controller: _passwordController,
           obscureText: vis,
           decoration: InputDecoration(
-            labelText: 'Password',
-            border: OutlineInputBorder(),
-            prefixIcon: Icon(Icons.security),
             errorText: validate ? null : errorText,
             suffixIcon: IconButton(
               icon: Icon(vis ? Icons.visibility_off : Icons.visibility),
@@ -218,7 +220,12 @@ class _SignInPageState extends State<SignInPage> {
             helperStyle: TextStyle(
               fontSize: 14,
             ),
-
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.black,
+                width: 2,
+              ),
+            ),
           ),
         )
       ],

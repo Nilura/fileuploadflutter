@@ -114,15 +114,29 @@ class _DeliveryState extends State<Delivery> {
                       children: <Widget>[
                         Text("Type:${post['type']}"),
                         Text("Contact:+94${post['contact']}"),
-                        Text("$rating"),
-                        buildRating(),
-                        TextButton(
-                          child:Text(
-                            'Rate',style:TextStyle(fontSize:14),
-                          ),
-                           onPressed: ()=>showRating(),
+                        Row(
+                          children:[
+                            Text("$rating"),
+                            buildRating1(),
+                          ]
+
                         ),
-                      ],
+                        Row(
+                            children:[
+                              TextButton(
+                                child:Text(
+                                  'Rate',style:TextStyle(fontSize:14),
+                                ),
+                                onPressed: ()=>showRating(),
+                              ),
+                              TextButton(
+                                child:Text(
+                                  'review',style:TextStyle(fontSize:14),
+                                ),
+                                onPressed: ()=>showReview(),
+                              ),
+                            ]
+                        ),],
                     ),
                     trailing: GestureDetector(
                       child: Icon(Icons.add_call),
@@ -146,6 +160,15 @@ class _DeliveryState extends State<Delivery> {
     onRatingUpdate:(rating)=>setState((){
       this.rating=rating;
     }),);
+  Widget buildRating1()=>RatingBar.builder(
+    minRating: 1,
+    itemSize: 18,
+    itemPadding: EdgeInsets.symmetric(horizontal: 4),
+    itemBuilder:(context,_)=>Icon(Icons.star,color:Colors.amber),
+    updateOnDrag: true,
+    onRatingUpdate:(rating)=>setState((){
+      this.rating=rating;
+    }),);
   void showRating()=>showDialog(
   context:context,
   builder:(context)=>AlertDialog(
@@ -154,14 +177,36 @@ class _DeliveryState extends State<Delivery> {
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisSize: MainAxisSize.min,
     children:[
-    Text('Please leave a star rating',
-      style:TextStyle(fontSize:20)),
-    TextField(controller:myController,
-    decoration: InputDecoration(
-    border: OutlineInputBorder(),
-    hintText: 'Review',),),]),
+      Text('Please leave a star rating',
+          style:TextStyle(fontSize:10)),
+      SizedBox(height: 5.0,),
+   Row(
+     children: [
+       Text("$rating"),
+       buildRating(),
+     ],
+   )
+
+    ]),
   actions: [
   TextButton(onPressed:()=>Navigator.pop(context) , child: Text('Ok',style:TextStyle(fontSize:20)))
   ],
   ),);
+  void showReview()=>showDialog(
+    context:context,
+    builder:(context)=>AlertDialog(
+      title:Text('Review this Product'),
+      content: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children:[
+            SizedBox(height: 5.0,),
+            TextField(controller:myController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Review',),),]),
+      actions: [
+        TextButton(onPressed:()=>Navigator.pop(context) , child: Text('Ok',style:TextStyle(fontSize:20)))
+      ],
+    ),);
 }

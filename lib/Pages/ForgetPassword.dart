@@ -131,6 +131,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         TextFormField(
           controller: _usernameController,
           decoration: InputDecoration(
+            border: OutlineInputBorder(),
             errorText: validate ? null : errorText,
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
@@ -152,6 +153,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           controller: _passwordController,
           obscureText: vis,
           decoration: InputDecoration(
+            border: OutlineInputBorder(),
             errorText: validate ? null : errorText,
             suffixIcon: IconButton(
               icon: Icon(vis ? Icons.visibility_off : Icons.visibility),

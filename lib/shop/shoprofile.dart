@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:blogapp/Screen/googlemap.dart';
 import 'package:blogapp/shop/table/main.dart';
+import 'package:blogapp/shop/updateitem.dart';
 import 'package:blogapp/shop/vieworders.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -60,13 +61,15 @@ class _ShowitemState extends State<Showitem> {
     }
   }
   Future<http.Response> deleteitem(String id) async {
+
     final http.Response response = await http.delete(
       Uri.parse('https://mongoapi3.herokuapp.com/item/$id'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-
+    print(id);
+    print(response);
     return response;
   }
   chooseImage(ImageSource source) async{
@@ -195,7 +198,7 @@ class _ShowitemState extends State<Showitem> {
                 child: Center(
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         SizedBox(
                           height: 50,
@@ -222,16 +225,8 @@ class _ShowitemState extends State<Showitem> {
                                                 );
                                               }, icon: Icon(Icons.api_outlined) ),
 
-                                          Icon(Icons.add_location),
-                                          Text("${city}"),
                                         ]),
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => Map(text: "${city}"),
-                                          ));
-                                    },
+
                                   ),
                                 ]),
                           ),
@@ -266,40 +261,70 @@ class _ShowitemState extends State<Showitem> {
                               ListTile(
                                 isThreeLine: true,
                                 title: Text("name:${item['itemname']}"),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text("Description:${item['description']}"),
-                                    Text("Price:${item['price']}"),
-                                    Text("Type:${item['category']}"),
+                                subtitle: Row(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text("Description:${item['description']}"),
+                                        Text("Price:${item['price']}"),
+                                        Text("Type:${item['category']}"),
+                                      ],
+                                    )
                                   ],
-                                ),
-                                trailing: GestureDetector(
-                                  child: Icon(
-                                    FontAwesomeIcons.trash,
-                                    size: 20.0,
-                                    color: Colors.brown[900],
-                                  ),
-                                  onTap: () {
-                                    // snapshot.data.removeAt(index);
-                                    //_onDeleteItemPressed(index);
-                                    //deletePost(item['_id']);
-                                   // deletePost(_itemsJson[index]['id']);
-                                    deleteitem(item['id']);
-                                    /* setState(() {
+                             ),
+                                trailing:Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.edit),
+                                      iconSize: 20.0,
+                                      color: Colors.blue,
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => Updateitem(id: '${item['_id']}',itemname: '${item['itemname']}',description:'${item['description']}',price:'${item['price']}',quantity:'${item['quantity']}',category:'${item['category']}',deliverystatus:'${item['deliverystatus']}',image:'${item['image']}'),
+                                            ));
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon: Icon(Icons.delete),
+                                      iconSize: 20.0,
+                                      color: Colors.red,
+                                      onPressed:(){
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: Text("Warning"),
+                                              content: Text("Are you sure want to delete data profile ${item['category']}?"),
+                                              actions: <Widget>[
+                                                FlatButton(
+                                                    child: Text("Yes"),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                      deleteitem(item['_id']);
+                                                    }
+                                                ),
+
+
+                                                FlatButton(
+                                                  child: Text("No"),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                )
+                                              ],
+                                            );
+                                          },);
+                                        /* setState(() {
                                       deletePost(item['_id']);
                                     });*/
-
-                                    Fluttertoast.showToast(
-                                      msg: "Deleted",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.BOTTOM,
-                                      backgroundColor: Colors.red,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0,
-                                    );
-                                  },
+                                      },
+                                    ),
+                                  ],
                                 ),)
                             ],
                           )));

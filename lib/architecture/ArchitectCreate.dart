@@ -1,7 +1,8 @@
+
+
+import 'dart:io';
 import 'package:flutter/material.dart';
-
-
-
+import 'package:flutter/widgets.dart';
 class ArchitectCreate extends StatefulWidget {
   const ArchitectCreate({Key key}) : super(key: key);
 
@@ -11,12 +12,40 @@ class ArchitectCreate extends StatefulWidget {
 
 class _MyHomePageState extends State<ArchitectCreate> {
   int _activeStepIndex = 0;
+ // FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true)
+ /* FilePickerResult result;
+  String filename;
+  PlatformFile pickedfile;
+  bool isloading =false;
+  File fileToDisplay;
 
+  void pickFile() async{
+    try{
+      setState(() {
+        isloading=true;
+      });
+      result= await  FilePicker.platform.pickFiles(
+        type:FileType.any,
+        allowMultiple: false,
+      );
+      if(result!=null){
+        filename=result.files.first.name;
+        pickedfile=result.files.first;
+        fileToDisplay=File(pickedfile.path.toString());
+      }
+      setState(() {
+        isloading=false;
+      });
+    }catch(e){
+      print(e);
+    }
+  }
+*/
   TextEditingController name = TextEditingController();
-  TextEditingController email = TextEditingController();
-  TextEditingController pass = TextEditingController();
-  TextEditingController address = TextEditingController();
-  TextEditingController pincode = TextEditingController();
+  TextEditingController designation = TextEditingController();
+  TextEditingController about = TextEditingController();
+  TextEditingController team = TextEditingController();
+  TextEditingController contactnumber = TextEditingController();
 
   List<Step> stepList() => [
     Step(
@@ -37,21 +66,38 @@ class _MyHomePageState extends State<ArchitectCreate> {
               height: 8,
             ),
             TextField(
-              controller: email,
+              controller: designation,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Email',
+                labelText: 'Designation',
               ),
             ),
             const SizedBox(
               height: 8,
             ),
             TextField(
-              controller: pass,
+              controller: about,
               obscureText: true,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Password',
+                labelText: 'About',
+              ),
+            ),
+            TextField(
+              controller: contactnumber,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Contact Number',
+              ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            TextField(
+              controller: team,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'No of Team Members',
               ),
             ),
           ],
@@ -62,30 +108,28 @@ class _MyHomePageState extends State<ArchitectCreate> {
         state:
         _activeStepIndex <= 1 ? StepState.editing : StepState.complete,
         isActive: _activeStepIndex >= 1,
-        title: const Text('Address'),
+        title: const Text('Contact Number'),
         content: Container(
           child: Column(
-            children: [
+            children: [/*
               const SizedBox(
                 height: 8,
               ),
-              TextField(
-                controller: address,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Full House Address',
-                ),
+              Center(
+                child:isloading?CircularProgressIndicator():TextButton(
+                    style: TextButton.styleFrom(
+                      primary: Colors.lightGreen,
+                    ),
+                    onPressed:(){
+                  pickFile();
+                }, child: Text('Pick File')),
               ),
+              if(pickedfile!=null)
+                SizedBox(height: 300,width: 400,child:Image.file(fileToDisplay)),
               const SizedBox(
                 height: 8,
               ),
-              TextField(
-                controller: pincode,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Pin Code',
-                ),
-              ),
+*/
             ],
           ),
         )),
@@ -99,10 +143,11 @@ class _MyHomePageState extends State<ArchitectCreate> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text('Name: ${name.text}'),
-                Text('Email: ${email.text}'),
+                Text('About: ${about.text}'),
+                Text('Designation: ${designation.text}'),
                 const Text('Password: *****'),
-                Text('Address : ${address.text}'),
-                Text('PinCode : ${pincode.text}'),
+                Text('Contact No : ${contactnumber.text}'),
+                Text('Team : ${team.text}'),
               ],
             )))
   ];
@@ -111,7 +156,14 @@ class _MyHomePageState extends State<ArchitectCreate> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter Stepper'),
+        backgroundColor: Colors.lightGreen,
+        elevation: 0.0,
+        centerTitle: true,
+        title: Text('Create Architecture',
+            style: TextStyle(
+                fontFamily: 'Varela',
+                fontSize: 20.0,
+                color: Color(0xFF545D68))),
       ),
       body: Stepper(
         type: StepperType.vertical,

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import "package:flutter/material.dart";
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../Pages/designs/background.dart';
+
 import '../NetworkHandler.dart';
 import 'HomePage.dart';
 
@@ -55,7 +55,7 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(
                 height: 20,
               ),
-           //   usernameTextField(),
+              usernameTextField(),
               emailTextField(),
               passwordTextField(),
               SizedBox(
@@ -70,12 +70,13 @@ class _SignUpPageState extends State<SignUpPage> {
                   if (_globalkey.currentState.validate() && validate) {
                     // we will send the data to rest server
                     Map<String, String> data = {
+                      "userName":_usernameController.text,
                       "email": _emailController.text,
                       "password": _passwordController.text,
                     };
                     print(data);
                     var responseRegister =
-                        await networkHandler.post("/auths/register", data);
+                    await networkHandler.post("/auths/register", data);
 
                     //Login Logic added here
                     if (responseRegister.statusCode == 200 ||
@@ -85,12 +86,12 @@ class _SignUpPageState extends State<SignUpPage> {
                         "password": _passwordController.text,
                       };
                       var response =
-                          await networkHandler.post("/auths/login", data);
+                      await networkHandler.post("/auths/login", data);
 
                       if (response.statusCode == 200 ||
                           response.statusCode == 201) {
                         Map<String, dynamic> output =
-                            json.decode(response.body);
+                        json.decode(response.body);
                         print(output["token"]);
                         await storage.write(
                             key: "token", value: output["token"]);
@@ -103,7 +104,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             MaterialPageRoute(
                               builder: (context) => HomePage(),
                             ),
-                            (route) => false);
+                                (route) => false);
                       } else {
                         Scaffold.of(context).showSnackBar(
                             SnackBar(content: Text("Netwok Error")));
@@ -124,23 +125,23 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: circular
                     ? CircularProgressIndicator()
                     : Container(
-                        width: 150,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.lightGreen,
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Sign Up",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                  width: 150,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xff00A86B),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Sign Up",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
+                    ),
+                  ),
+                ),
               )
             ],
           ),
@@ -158,7 +159,7 @@ class _SignUpPageState extends State<SignUpPage> {
       });
     } else {
       var response = await networkHandler
-          .get("/user/checkUsername/${_usernameController.text}");
+          .get("/auths/checkusername/${_usernameController.text}");
       if (response['Status']) {
         setState(() {
           // circular = false;
@@ -179,13 +180,17 @@ class _SignUpPageState extends State<SignUpPage> {
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10.0),
       child: Column(
         children: [
+          Text("Username"),
           TextFormField(
             controller: _usernameController,
             decoration: InputDecoration(
               errorText: validate ? null : errorText,
-              labelText: 'Email',
-              border: OutlineInputBorder(),
-              prefixIcon: Icon(Icons.email),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black,
+                  width: 2,
+                ),
+              ),
             ),
           )
         ],
@@ -198,6 +203,7 @@ class _SignUpPageState extends State<SignUpPage> {
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10.0),
       child: Column(
         children: [
+          Text("Email"),
           TextFormField(
             controller: _emailController,
             validator: (value) {
@@ -206,10 +212,12 @@ class _SignUpPageState extends State<SignUpPage> {
               return null;
             },
             decoration: InputDecoration(
-              labelText: 'Email',
-              border: OutlineInputBorder(),
-              prefixIcon: Icon(Icons.email),
-
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black,
+                  width: 2,
+                ),
+              ),
             ),
           )
         ],
@@ -222,6 +230,7 @@ class _SignUpPageState extends State<SignUpPage> {
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10.0),
       child: Column(
         children: [
+          Text("Password"),
           TextFormField(
             controller: _passwordController,
             validator: (value) {
@@ -231,9 +240,6 @@ class _SignUpPageState extends State<SignUpPage> {
             },
             obscureText: vis,
             decoration: InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.security),
               suffixIcon: IconButton(
                 icon: Icon(vis ? Icons.visibility_off : Icons.visibility),
                 onPressed: () {
@@ -245,6 +251,12 @@ class _SignUpPageState extends State<SignUpPage> {
               helperText: "Password length should have >=8",
               helperStyle: TextStyle(
                 fontSize: 14,
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black,
+                  width: 2,
+                ),
               ),
             ),
           )

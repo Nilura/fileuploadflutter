@@ -6,7 +6,8 @@ import 'package:blogapp/Screen/Delivery.dart';
 import 'package:blogapp/Screen/HomeScreen.dart';
 import 'package:blogapp/Profile/ProfileScreen.dart';
 import 'package:blogapp/Screen/Architectlist.dart';
-import 'package:blogapp/Screen/Map2.dart';
+import 'package:blogapp/Screen/Map.dart';
+
 import 'package:blogapp/Screen/Settings.dart';
 
 import 'package:blogapp/Screen/feedback.dart';
@@ -247,7 +248,7 @@ Future<void> initPlateformState() async{
                 child:Row(
                   children:[
                     Icon(Icons.api_sharp ,color:Colors.blue),
-                    Text("Search"),
+                    Text("Settings"),
                   ],
                 ),
               ),
@@ -256,7 +257,7 @@ Future<void> initPlateformState() async{
                 child:Row(
                   children:[
                     Icon(Icons.art_track_outlined,color:Colors.blue),
-                    Text("Blog list"),
+                    Text("Search"),
                   ],
 
                 ),
@@ -279,22 +280,22 @@ Future<void> initPlateformState() async{
                   children:[
                     Icon(Icons.app_registration_sharp,color:Colors.blue),
                     Text("Crud"),
-                  ],
-
-                ),
-
-              ),
+                  ],),),
               PopupMenuItem<int>(
                 value:5,
                 child:Row(
                   children:[
                     Icon(Icons.add_location_rounded ,color:Colors.blue),
                     Text("Map"),
-                  ],
+                  ],),),
+              PopupMenuItem<int>(
+                value:6,
+                child:Row(
+                  children:[
+                    Icon(Icons.add_location_rounded ,color:Colors.blue),
+                    Text("Near Shops"),
+                  ],),),
 
-                ),
-
-              ),
             ],)
         ],
       ),
@@ -363,6 +364,8 @@ Future<void> initPlateformState() async{
       case 4:
         Navigator.of(context).push(MaterialPageRoute(builder: (context) =>App()));break;
       case 5:
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) =>Map2()));break;
+      case 6:
         Navigator.of(context).push(MaterialPageRoute(builder: (context) =>Map2()));break;
     }
   }

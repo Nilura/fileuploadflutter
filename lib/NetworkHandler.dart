@@ -7,8 +7,8 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class NetworkHandler {
   //String baseurl = "https://apiforgovipiyasa.herokuapp.com";
- String baseurl = "https://govi-piyasa-v-0-1.herokuapp.com/api/v1/";
-  String baseurl2="";
+ String baseurl = "https://govi-piyasa-v-0-1.herokuapp.com/api/v1";
+  //String baseurl2="";
   var log = Logger();
   FlutterSecureStorage storage = FlutterSecureStorage();
 
@@ -45,6 +45,7 @@ class NetworkHandler {
       },
       body: json.encode(body),
     );
+    print(response);
     return response;
   }
 

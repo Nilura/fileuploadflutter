@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:blogapp/CustumWidget/shopservice.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,40 +15,7 @@ class Architect extends StatefulWidget {
 }
 
 class _ArchitectState extends State<Architect> {
-/*  "sellerName":sellerName,
-  "contactNumber":phoneNo,
-  "email":email,
-  "address":address,*/
-/*
- Future<void> postData() async{
-    try {
-      final response =await http.post(
-          Uri.parse("http://localhost:5000/userTask/createUserTask"),
-          body: {
-            "name":shopName,
-            "age":city
 
-          });
-      print(response.body);
-    }catch(e){
-      print(e);
-    }
-  }*/
-  /*
-  final httpClient=http.Client();
-  Map<String,dynamic> customHeaders={
-    "Accept":"application/json",
-    "content-Type":"application/json;charset=UTF-8"
-  };
-
-  Future addData(Map body) async{
-    final Uri restAPIURL=
-    Uri.parse("https://jsonplaceholder.typicode.com/albums");
-    http.Response response=await httpClient.post(restAPIURL
-        ,headers: customHeaders,body: jsonEncode(body));
-    return response.body;
-
-  }*/
   var AName,about,designation,token,team,phoneNo;
   @override
   Widget build(BuildContext context) {
@@ -87,7 +55,7 @@ class _ArchitectState extends State<Architect> {
                     child: Column(
                       children: <Widget>[
                         Container(
-                          margin: const EdgeInsets.all(15.0),
+                          margin: const EdgeInsets.only(left: 10.0, right: 10.0),
                           child: TextFormField(
                             decoration: InputDecoration(
                               labelText: 'Name',
@@ -103,10 +71,8 @@ class _ArchitectState extends State<Architect> {
                           ),
                         ),
                         SizedBox(height:5.0),
-
-
                         Container(
-                          margin: const EdgeInsets.all(15.0),
+                          margin: const EdgeInsets.only(left: 10.0, right: 10.0),
                           child: TextFormField(
                             decoration: InputDecoration(
                                 labelText: 'Designation',
@@ -122,7 +88,7 @@ class _ArchitectState extends State<Architect> {
                         ),
                         SizedBox(height:5.0),
                         Container(
-                          margin: const EdgeInsets.all(15.0),
+                          margin: const EdgeInsets.only(left: 10.0, right: 10.0),
                           child: TextFormField(
                             decoration: InputDecoration(
                               labelText: 'ContactNumber',
@@ -138,7 +104,7 @@ class _ArchitectState extends State<Architect> {
                           ),),
                         SizedBox(height:5.0),
                         Container(
-                          margin: const EdgeInsets.all(15.0),
+                          margin: const EdgeInsets.only(left: 10.0, right: 10.0),
                           child: TextFormField(
                             decoration: InputDecoration(
                               labelText: 'About',
@@ -155,7 +121,7 @@ class _ArchitectState extends State<Architect> {
                         ),
                         SizedBox(height:5.0),
                         Container(
-                          margin: const EdgeInsets.all(15.0),
+                          margin: const EdgeInsets.only(left: 10.0, right: 10.0),
                           child: TextFormField(
                             decoration: InputDecoration(
                               labelText: 'Team',
@@ -172,9 +138,10 @@ class _ArchitectState extends State<Architect> {
                         ),
                         SizedBox(height:5.0),
                         Container(
+                          margin: const EdgeInsets.only(left: 10.0, right: 10.0),
                             child: TextFormField(
                               decoration: InputDecoration(
-                                labelText: 'Upload',
+                                labelText: 'Upload Proof Document',
                                 prefixIcon:GestureDetector(
                                 child:Icon(Icons.upload),
                                   onTap: (){
@@ -255,6 +222,24 @@ class _ArchitectState extends State<Architect> {
   var responseData=await response.stream.toBytes();
   //var result =String.fromCharCode(responseData);
   }*/
+  static Future<bool> _upload(File file, int id) async {
+    var headers = {'Authorization': 'Bearer TOKEN'}; // remove headers if not wanted
+    var request = http.MultipartRequest(
+        'POST', Uri.parse("https://govi-piyasa-v-0-1.herokuapp.com/api/v1/items/")); // your server url
+    request.fields.addAll({'id': '$id'}); // any other fields required by your server
+    request.files
+        .add(await http.MultipartFile.fromPath('image', '${file.path}')); // file you want to upload
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+      return true;
+    } else {
+      print(response.reasonPhrase);
+      return false;
+    }
+  }
+}
   void _showToast(BuildContext context) {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
@@ -264,4 +249,4 @@ class _ArchitectState extends State<Architect> {
       ),
     );
   }
-}
+
