@@ -86,7 +86,7 @@ class _DeliveryState extends State<Delivery> {
           backgroundColor: Colors.lightGreen,
           elevation: 0.0,
           centerTitle: true,
-          title: Text('DeliveryPeople',
+          title: Text('Delivery',
               style: TextStyle(
                   fontFamily: 'Varela',
                   fontSize: 20.0,
