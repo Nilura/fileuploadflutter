@@ -33,29 +33,8 @@ class _DeliveryState extends State<Delivery> {
       });
     } catch (err) {}
   }
-  /*
-  final String apiUrl = "http://ninanews.com/NinaNewsService/api/values/GetLastXBreakingNews?rowsToReturn=10";
-
-  Future<List<dynamic>> fetchUsers() async {
-
-    var result = await http.get(apiUrl);
-    return json.decode(result.body)['Data'];
-
-  }*/
 
 
-/*
-  final httpClient=http.Client();
-  List<dynamic> todoData;
-  Future fetchData() async {
-    final Uri restAPIURL=
-    Uri.parse("http://localhost:3000/users");
-    http.Response response=await httpClient.get(restAPIURL);
- final Map parsedData=await json.decode(response.body.toString());
- todoData=parsedData['result'];
-
-  }
-*/
 /*
    Map data;
    List userData;
